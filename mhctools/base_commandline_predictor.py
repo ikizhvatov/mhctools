@@ -202,7 +202,7 @@ class BaseCommandlinePredictor(BasePredictor):
             supported_alleles = set([])
             for line in supported_alleles_str.split("\n"):
                 line = line.strip()
-                if not line.startswith('#') and len(line) > 0:
+                if not (line.startswith('#') or line.startswith('Alleles')) and len(line) > 0:
                     try:
                         # We need to normalize these alleles (the output of the predictor
                         # when it lists its supported alleles) so that they are comparable with
