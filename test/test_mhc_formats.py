@@ -3,6 +3,7 @@ from mhctools.parsing import (
   parse_netmhcpan3_stdout,
   parse_netmhc3_stdout,
   parse_netmhc4_stdout,
+  parse_netmhcii_stdout,
 )
 
 def test_netmhc3_stdout():
@@ -173,3 +174,75 @@ def test_mhcpan3_stdout():
             # expect the epitopes to be sorted in increasing IC50
             assert entry.value == 18234.7, entry
             assert entry.percentile_rank == 10.00, entry
+
+def test_mhcii_stdout():
+    """
+    Test parsing of NetMHCII output of predictions for the test.pep file
+    coming with the netMHCII-2.3 software package, and the default allele
+    DRB1*01:01. The contents of the is as follows.
+    AANWILRGTSFVYVP 0.187811
+    AGDLGRDELMELASD 0.029631
+    ALLIIPPKIHISIEL 0.787189
+    ASRELERFALNPGLL 0.570844
+    AYAAQGYKVLVLNPSVAA 0.623140
+    CHFITKETPDRLTDQ 0.760232
+    CQFLKVEKSQLLNEF 0.569612
+    DCIMTSYQYLIIQNT 0.807947
+    DIVIYSKYGGTEIKY 0.074375
+    DSKHQLDMIITAVNS 0.437926
+    EHDLERGPPGPRRPP 0.148750
+    EIPSFRWTQSLRRGL 0.457605
+    ELGEWVFSAIKSPQA 0.168273
+    EYLILSARDVLAVVS 0.138438
+    FIHFFTWGTMFVPKY 0.449301
+    FMRMAWGGSYIALDS 0.146974
+    FSLECIMDVGEIQNK 0.488737
+    GFVGLCRTLGSKCVR 0.320448
+    The command to obtain the output is
+    ../netMHCII-2.3 test.pep -p > test.pep.out
+    """
+    netmhcii_output = """
+    # Input is in PEPTIDE format
+
+    # Peptide length 15
+      NetMHCII version 2.3.
+
+    Strong binder threshold   2.00. Weak binder threshold  10.00.
+
+    ------------------------------------------------------------------------------------------------
+                    Allele  pos              peptide       core Of 1-log50k(aff) affinity(nM)  MeasuredAff    %Rank Relia     Identity Bind Level
+    ------------------------------------------------------------------------------------------------
+                 DRB1_0101    1      AANWILRGTSFVYVP  WILRGTSFV  3         0.681         31.7        0.188    11.00 0.505      PEPLIST           
+                 DRB1_0101    2      AGDLGRDELMELASD  GRDELMELA  4         0.125      12967.4        0.030   100.00 0.425      PEPLIST           
+                 DRB1_0101    3      ALLIIPPKIHISIEL  LLIIPPKIH  1         0.508        205.2        0.787    39.00 0.310      PEPLIST           
+                 DRB1_0101    4      ASRELERFALNPGLL  ERFALNPGL  5         0.465        324.9        0.571    48.00 0.315      PEPLIST           
+                 DRB1_0101    5   AYAAQGYKVLVLNPSVAA  YKVLVLNPS  6         0.780         10.8        0.623     0.50 0.475      PEPLIST         SB
+                 DRB1_0101    6      CHFITKETPDRLTDQ  ITKETPDRL  3         0.666         37.1        0.760    13.00 0.780      PEPLIST           
+                 DRB1_0101    7      CQFLKVEKSQLLNEF  LKVEKSQLL  3         0.806          8.2        0.570     1.80 0.520      PEPLIST         SB
+                 DRB1_0101    8      DCIMTSYQYLIIQNT  YQYLIIQNT  6         0.780         10.8        0.808     3.00 0.315      PEPLIST         WB
+                 DRB1_0101    9      DIVIYSKYGGTEIKY  YSKYGGTEI  4         0.448        392.5        0.074    55.00 0.620      PEPLIST           
+                 DRB1_0101   10      DSKHQLDMIITAVNS  LDMIITAVN  5         0.738         17.0        0.438     5.50 0.360      PEPLIST         WB
+                 DRB1_0101   11      EHDLERGPPGPRRPP  LERGPPGPR  3         0.117      14112.8        0.149   100.00 0.540      PEPLIST           
+                 DRB1_0101   12      EIPSFRWTQSLRRGL  FRWTQSLRR  4         0.741         16.5        0.458     5.50 0.945      PEPLIST         WB
+                 DRB1_0101   13      ELGEWVFSAIKSPQA  FSAIKSPQA  6         0.835          6.0        0.168     1.00 0.805      PEPLIST         SB
+                 DRB1_0101   14      EYLILSARDVLAVVS  YLILSARDV  1         0.846          5.3        0.138     0.70 0.470      PEPLIST         SB
+                 DRB1_0101   15      FIHFFTWGTMFVPKY  FIHFFTWGT  0         0.449        387.8        0.449    55.00 0.315      PEPLIST           
+                 DRB1_0101   16      FMRMAWGGSYIALDS  MRMAWGGSY  1         0.851          5.0        0.147     0.60 0.345      PEPLIST         SB
+                 DRB1_0101   17      FSLECIMDVGEIQNK  FSLECIMDV  0         0.474        295.9        0.489    46.00 0.480      PEPLIST           
+                 DRB1_0101   18      GFVGLCRTLGSKCVR  CRTLGSKCV  5         0.853          4.9        0.320     0.60 0.780      PEPLIST         SB
+    ------------------------------------------------------------------------------------------------
+
+    Allele: DRB1_0101. Number of high binders 6. Number of weak binders 3. Number of peptides 18
+
+    ------------------------------------------------------------------------------------------------
+    """
+    binding_predictions = parse_netmhcii_stdout(netmhcii_output)
+
+    assert len(binding_predictions) == 18
+    for entry in binding_predictions:
+        assert entry.allele == 'HLA-DRA1*01:01-DRB1*01:01', \
+            "Expected entry %s to have allele 'HLA-DRA1*01:01-DRB1*01:01'" % (entry,)
+        if entry.peptide == "GFVGLCRTLGSKCVR":
+            # expect the epitopes to be sorted in increasing IC50
+            assert entry.value == 4.9, entry
+            assert entry.percentile_rank == 0.6, entry
