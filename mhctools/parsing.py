@@ -213,7 +213,7 @@ def parse_netmhc4_stdout(
         stdout=stdout,
         prediction_method_name=prediction_method_name,
         sequence_key_mapping=sequence_key_mapping,
-        key_index=10,
+        key_index=3,   # HACK by Ilya: get Core instead of Identity into key_index
         offset_index=0,
         peptide_index=2,
         allele_index=1,
@@ -282,7 +282,7 @@ def parse_netmhcpan3_stdout(
         stdout=stdout,
         prediction_method_name=prediction_method_name,
         sequence_key_mapping=sequence_key_mapping,
-        key_index=10,
+        key_index=3,  # HACK by Ilya: get Core instead of Identity into key_index
         offset_index=0,
         peptide_index=2,
         allele_index=1,
@@ -395,7 +395,7 @@ def parse_netmhciipan_stdout(
         stdout=stdout,
         prediction_method_name=prediction_method_name,
         sequence_key_mapping=sequence_key_mapping,
-        key_index=3,
+        key_index=5, # HACK by Ilya: get Core instead of Identity into key_index
         offset_index=0,
         peptide_index=2,
         allele_index=1,
@@ -446,7 +446,7 @@ def parse_netmhcii_stdout(
         stdout=stdout,
         prediction_method_name=prediction_method_name,
         sequence_key_mapping=sequence_key_mapping,
-        key_index=10,
+        key_index=3, # HACK by Ilya: get Core instead of Identity into key_index
         offset_index=1,
         peptide_index=2,
         allele_index=0,

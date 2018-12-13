@@ -213,7 +213,7 @@ class BasePredictor(object):
             for name, offset in peptide_to_name_offset_pairs[
                     binding_prediction.peptide]:
                 results.append(binding_prediction.clone_with_updates(
-                    source_sequence_name=name,
+                    #source_sequence_name=name,
                     offset=offset))
         self._check_results(
             results,
