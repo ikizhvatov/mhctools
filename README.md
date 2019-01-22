@@ -54,6 +54,7 @@ The following MHC binding predictors are available in `mhctools`:
 * `NetMHC4`: requires locally installed version of [NetMHC 4.x](http://www.cbs.dtu.dk/services/NetMHC/)
 * `NetMHC`: a wrapper function to automatically use `NetMHC3` or `NetMHC4` depending on what's installed.
 * `NetMHCpan`: requires locally installed version of [NetMHCpan](http://www.cbs.dtu.dk/services/NetMHCpan/)
+* `NetH2pan`: requires locally installed version of [NetH2pan](http://www.cbs.dtu.dk/services/NetH2pan/)
 * `NetMHCII`: requires locally installed version of [NetMHCII](http://www.cbs.dtu.dk/services/NetMHCII/)
 * `NetMHCIIpan`: requires locally installed version of [NetMHCIIpan](http://www.cbs.dtu.dk/services/NetMHCIIpan/)
 * `NetMHCcons`: requires locally installed version of [NetMHCcons](http://www.cbs.dtu.dk/services/NetMHCcons/)

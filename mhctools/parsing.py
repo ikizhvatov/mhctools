@@ -453,3 +453,55 @@ def parse_netmhcii_stdout(
         ic50_index=6,
         rank_index=8,
         log_ic50_index=5)
+
+def parse_neth2pan_stdout(
+        stdout,
+        prediction_method_name="neth2pan",
+        sequence_key_mapping=None):
+    """
+    # NetH2pan version 1.0
+
+    # Tmpdir made /var/folders/q1/5262mf_55mq7fr8jg7_4x1_m0000gn/T//netMHCpanvnAFCE
+    # Input is in PEPTIDE format
+
+    # Make binding affinity predictions
+
+    H-2-Kb : Distance to training data  0.000 (using nearest neighbor H2-Kb)
+
+    # Rank Threshold for Strong binding peptides   0.500
+    # Rank Threshold for Weak binding peptides   2.000
+    -----------------------------------------------------------------------------------
+      Pos          HLA         Peptide       Core Of Gp Gl Ip Il        Icore        Identity     Score Aff(nM)   %Rank     Exp  BindLevel
+    -----------------------------------------------------------------------------------
+        1       H-2-Kb       AAAWYLWEV  AAAWYLWEV  0  0  0  0  0    AAAWYLWEV         PEPLIST 0.2155840  4852.3  7.3782  0.7426
+        1       H-2-Kb       AAGLQDCTM  AAGLQDCTM  0  0  0  0  0    AAGLQDCTM         PEPLIST 0.1531730  9532.7 13.9653  0.0000
+        1       H-2-Kb       AARNIVRRA  AARNIVRRA  0  0  0  0  0    AARNIVRRA         PEPLIST 0.0535130 28023.0 51.3532  0.0000
+        1       H-2-Kb       AARPDDPTL  AARPDDPTL  0  0  0  0  0    AARPDDPTL         PEPLIST 0.0637980 25071.8 43.7583  0.1488
+        1       H-2-Kb       AASCGGAVF  AASCGGAVF  0  0  0  0  0    AASCGGAVF         PEPLIST 0.0875350 19393.0 30.9589  0.1492
+        1       H-2-Kb       AASKQQMLM  AASKQQMLM  0  0  0  0  0    AASKQQMLM         PEPLIST 0.1453810 10371.2 15.2097  0.0000
+        1       H-2-Kb       AASSTHRKV  AASSTHRKV  0  0  0  0  0    AASSTHRKV         PEPLIST 0.0846930 19998.6 32.2467  0.2717
+        1       H-2-Kb       AEALLADGL  AEALLADGL  0  0  0  0  0    AEALLADGL         PEPLIST 0.0633800 25185.4 44.0401  0.0847
+        1       H-2-Kb       AEESLSLEA  AEESLSLEA  0  0  0  0  0    AEESLSLEA         PEPLIST 0.0432640 31309.3 60.6026  0.0000
+        1       H-2-Kb       AEFGPWQTV  AEFGPWQTV  0  0  0  0  0    AEFGPWQTV         PEPLIST 0.1139860 14566.4 22.0583  0.3156
+    -----------------------------------------------------------------------------------
+
+    Protein PEPLIST. Allele H-2-Kb. Number of high binders 0. Number of weak binders 0. Number of peptides 10
+    """
+
+    # the offset specified in "pos" (at index 0) is 1-based instead of 0-based. we adjust it to be
+    # 0-based, as in all the other netmhc predictors supported by this library.
+    transforms = {
+        0: lambda x: int(x) - 1,
+    }
+    return parse_stdout(
+        stdout=stdout,
+        prediction_method_name=prediction_method_name,
+        sequence_key_mapping=sequence_key_mapping,
+        key_index=10,
+        offset_index=0,
+        peptide_index=2,
+        allele_index=1,
+        ic50_index=12,
+        rank_index=13,
+        log_ic50_index=11,
+        transforms=transforms)

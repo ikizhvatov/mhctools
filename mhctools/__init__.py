@@ -17,6 +17,7 @@ from .netmhc_pan import NetMHCpan
 from .netmhc_pan28 import NetMHCpan28
 from .netmhc_pan3 import NetMHCpan3
 from .netmhc_pan4 import NetMHCpan4
+from .neth2_pan import NetH2pan
 from .netmhcii import NetMHCII
 from .netmhcii_pan import NetMHCIIpan
 from .random_predictor import RandomBindingPredictor
@@ -37,6 +38,7 @@ __all__ = [
     "NetMHC",
     "NetMHC3",
     "NetMHC4",
+    "NetH2pan",
     "NetMHCcons",
     "NetMHCpan",
     "NetMHCpan28",
