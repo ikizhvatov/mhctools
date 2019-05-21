@@ -42,7 +42,7 @@ for binding_prediction in binding_predictions:
 
 The following MHC binding predictors are available in `mhctools`:
 * `MHCflurry`: open source predictor installed by default with `mhctools`, requires the user run `mhcflurry-downloads fetch` first to download MHCflurry models
-# 'MixMHC2pred`: requires locally installed version of [MixMHC2pred](https://github.com/GfellerLab/MixMHC2pred)
+* 'MixMHC2pred`: requires locally installed version of [MixMHC2pred](https://github.com/GfellerLab/MixMHC2pred)
 * `NetMHC3`: requires locally installed version of [NetMHC 3.x](http://www.cbs.dtu.dk/services/NetMHC-3.4/)
 * `NetMHC4`: requires locally installed version of [NetMHC 4.x](http://www.cbs.dtu.dk/services/NetMHC/)
 * `NetMHC`: a wrapper function to automatically use `NetMHC3` or `NetMHC4` depending on what's installed.
