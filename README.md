@@ -1,12 +1,4 @@
-[![Build Status](https://travis-ci.org/openvax/mhctools.svg?branch=master)](https://travis-ci.org/openvax/mhctools) [![Coverage Status](https://coveralls.io/repos/openvax/mhctools/badge.svg?branch=master)](https://coveralls.io/r/openvax/mhctools?branch=master)
-<a href="https://pypi.python.org/pypi/mhctools/">
-    <img src="https://img.shields.io/pypi/v/mhctools.svg?maxAge=1000" alt="PyPI" />
-</a>
-<!-- 
-[![DOI](https://zenodo.org/badge/18834/openvax/mhctools.svg)](https://zenodo.org/badge/latestdoi/18834/openvax/mhctools)
--->
-
-# mhctools
+# mhctools (extended)
 Python interface to running command-line and web-based MHC binding predictors.
 
 ## Commandline examples
@@ -50,6 +42,7 @@ for binding_prediction in binding_predictions:
 
 The following MHC binding predictors are available in `mhctools`:
 * `MHCflurry`: open source predictor installed by default with `mhctools`, requires the user run `mhcflurry-downloads fetch` first to download MHCflurry models
+# 'MixMHC2pred`: requires locally installed version of [MixMHC2pred](https://github.com/GfellerLab/MixMHC2pred)
 * `NetMHC3`: requires locally installed version of [NetMHC 3.x](http://www.cbs.dtu.dk/services/NetMHC-3.4/)
 * `NetMHC4`: requires locally installed version of [NetMHC 4.x](http://www.cbs.dtu.dk/services/NetMHC/)
 * `NetMHC`: a wrapper function to automatically use `NetMHC3` or `NetMHC4` depending on what's installed.
