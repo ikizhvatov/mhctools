@@ -122,13 +122,15 @@ class BaseCommandlinePredictor(BasePredictor):
         require_string(input_file_flag, "Input file flag")
         self.input_file_flag = input_file_flag
 
-        require_string(length_flag, "Peptide length flag")
+        if supported_alleles_flag is not None:
+            require_string(length_flag, "Peptide length flag")
         self.length_flag = length_flag
 
         require_string(allele_flag, "Allele flag")
         self.allele_flag = allele_flag
 
-        require_iterable_of(peptide_mode_flags, string_types)
+        if peptide_mode_flags is not None:
+            require_iterable_of(peptide_mode_flags, string_types)
         self.peptide_mode_flags = peptide_mode_flags
 
         if tempdir_flag is not None:
@@ -157,6 +159,9 @@ class BaseCommandlinePredictor(BasePredictor):
             valid_alleles = self._determine_supported_alleles(
                 self.program_name,
                 self.supported_alleles_flag)
+        elif self.program_name == "MixMHC2pred":
+            # MixMHC2pred returns error on a dry run, so not running it
+            valid_alleles = None
         else:
             # if we're not running the tool to determine supported alleles
             # then at least try running it by itself to determine if it's
@@ -285,7 +290,7 @@ class BaseCommandlinePredictor(BasePredictor):
             logger.warn("No binding predictions from %s" % self.program_name)
         return BindingPredictionCollection(binding_predictions)
 
-    def predict_peptides(self, peptides):
+    def predict_peptides(self, peptides, peptide_mode=True):
         self._check_peptide_inputs(peptides)
         input_filenames = create_input_peptides_files(
             peptides,
@@ -318,7 +323,7 @@ class BaseCommandlinePredictor(BasePredictor):
                 commands[output_file] = self._build_command(
                     input_filename=input_filename,
                     allele=allele,
-                    peptide_mode=True,
+                    peptide_mode=peptide_mode,
                     temp_dirname=temp_dirname)
         results = self._run_commands_and_collect_predictions(
             commands=commands,
