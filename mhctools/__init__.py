@@ -23,7 +23,7 @@ from .netmhcii_pan import NetMHCIIpan
 from .random_predictor import RandomBindingPredictor
 from .unsupported_allele import UnsupportedAllele
 
-__version__ = "1.6.18"
+__version__ = "1.6.20"
 
 __all__ = [
     "BindingPrediction",
