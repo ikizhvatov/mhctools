@@ -94,8 +94,8 @@ class BasePredictor(object):
         """
         Given a list of peptide sequences, returns a BindingPredictionCollection
         """
-        raise NotImplementedError("%s must implement predict_peptides" % (
-            self.__class__.__name__))
+        raise NotImplementedError(
+            "%s must implement predict_peptides" % (self.__class__.__name__,))
 
     def predict_peptides_dataframe(self, peptides):
         return self.predict_peptides(peptides).to_dataframe()
@@ -139,8 +139,12 @@ class BasePredictor(object):
             missing = expected.difference(observed)
             example_allele, example_peptide = list(missing)[0]
             raise ValueError(
-                "Missing %d binding predictions, example peptide='%s' allele='%s'" % (
-                    len(missing), example_peptide, example_allele))
+                "Missing %d predictions, example peptide='%s' allele='%s'. "
+                "Result set had %d predictions." % (
+                    len(missing),
+                    example_peptide,
+                    example_allele,
+                    len(binding_predictions)))
         elif len(observed.intersection(expected)) < len(observed):
             extra = observed.difference(expected)
             example_allele, example_peptide = list(extra)[0]
@@ -210,8 +214,8 @@ class BasePredictor(object):
         # create BindingPrediction objects with sequence name and offset
         results = []
         for binding_prediction in binding_predictions:
-            for name, offset in peptide_to_name_offset_pairs[
-                    binding_prediction.peptide]:
+            peptide = binding_prediction.peptide
+            for name, offset in peptide_to_name_offset_pairs[peptide]:
                 results.append(binding_prediction.clone_with_updates(
                     source_sequence_name=name,
                     offset=offset))
@@ -222,7 +226,7 @@ class BasePredictor(object):
         return BindingPredictionCollection(results)
 
     def predict(self, sequence_dict, peptide_lengths=None):
-        logger.warn("Deprecated method 'predict', use 'predict_subsequences")
+        logger.warning("Deprecated method 'predict', use 'predict_subsequences")
         return self.predict_subsequences(sequence_dict, peptide_lengths=None)
 
     def predict_subsequences_dataframe(

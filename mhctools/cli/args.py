@@ -32,6 +32,8 @@ from .. import (
     NetMHCpan28,
     NetMHCpan3,
     NetMHCpan4,
+    NetMHCpan4_EL,
+    NetMHCpan4_BA,
     NetH2pan,
     NetMHCII,
     NetMHCIIpan,
@@ -43,6 +45,7 @@ from .. import (
     IedbSMM_PMBEC,
     IedbNetMHCIIpan,
     MHCflurry,
+    MixMHCpred,
 )
 
 
@@ -54,6 +57,8 @@ mhc_predictors = {
     "netmhc4": NetMHC4,
     "netmhcpan": NetMHCpan,
     "netmhcpan4": NetMHCpan4,
+    "netmhcpan4-ba": NetMHCpan4_BA,
+    "netmhcpan4-el": NetMHCpan4_EL,
     "netmhcpan28": NetMHCpan28,
     "netmhcpan3": NetMHCpan3,
     "neth2pan": NetH2pan,
@@ -75,6 +80,7 @@ mhc_predictors = {
     # "smm": None,
     # "smm-pmbec": None,
     "mhcflurry": MHCflurry,
+    "mixmhcpred": MixMHCpred,
 }
 
 def add_mhc_args(arg_parser):
@@ -87,6 +93,12 @@ def add_mhc_args(arg_parser):
         choices=list(sorted(mhc_predictors.keys())),
         type=lambda s: s.lower().strip(),
         required=True)
+
+    mhc_options_arg_group.add_argument(
+        "--mhc-predictor-path",
+        help="Path to executable program used for MHC binding predictor",
+        default=None,
+        required=False)
 
     mhc_options_arg_group.add_argument(
         "--mhc-predictor-models-path",
@@ -157,6 +169,11 @@ def mhc_binding_predictor_from_args(args):
     kwargs = dict(alleles=alleles)
     if peptide_lengths is not None:
         kwargs["default_peptide_lengths"] = peptide_lengths
+
     if args.mhc_predictor_models_path:
         kwargs["models_path"] = args.mhc_predictor_models_path
+
+    if args.mhc_predictor_path:
+        kwargs["program_name"] = args.mhc_predictor_path
+
     return mhc_class(**kwargs)
