@@ -18,13 +18,9 @@ from .netmhc_cons import NetMHCcons
 from .netmhc_pan import NetMHCpan
 from .netmhc_pan28 import NetMHCpan28
 from .netmhc_pan3 import NetMHCpan3
-<<<<<<< HEAD
-from .netmhc_pan4 import NetMHCpan4
+from .netmhc_pan4 import NetMHCpan4, NetMHCpan4_BA, NetMHCpan4_EL
 from .neth2_pan import NetH2pan
 from .netmhcii import NetMHCII
-=======
-from .netmhc_pan4 import NetMHCpan4, NetMHCpan4_BA, NetMHCpan4_EL
->>>>>>> 37395797da5a127621e3d001e846ef07221624ec
 from .netmhcii_pan import NetMHCIIpan
 from .random_predictor import RandomBindingPredictor
 from .unsupported_allele import UnsupportedAllele
